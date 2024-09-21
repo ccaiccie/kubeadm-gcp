@@ -35,5 +35,5 @@ To run the script and create the Kubernetes cluster, follow these steps:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/<your-repo>/kubernetes-gcp-setup.git
-cd kubernetes-gcp-setup
+git clone https://github.com/ccaiccie/kubeadm-gcp.git
+bash kubeadm-gcp.sh
