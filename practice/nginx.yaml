@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-pv
+spec:
+  capacity:
+    storage: 1Gi  # Define the capacity for this volume
+  accessModes:
+    - ReadWriteOnce  # Allow read and write access from a single node
+  hostPath:
+    path: /mnt/data/nginx  # Host directory where Nginx config files are stored
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi  # Request 1Gi of storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1  # Number of Nginx pods to run
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest  # Use the official Nginx image
+        ports:
+        - containerPort: 80  # Expose port 80
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf  # Mount the config file in the container
+          subPath: nginx.conf  # Mount just the file
+      volumes:
+      - name: nginx-config-volume
+        persistentVolumeClaim:
+          claimName: nginx-pvc  # Bind to the PVC
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 32000  # The NodePort to access from outside the cluster
