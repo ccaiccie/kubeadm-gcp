@@ -8,7 +8,7 @@ gcloud compute instances create kubemain \
  --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
  --provisioning-model=SPOT \
  --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
- --create-disk=auto-delete=yes,boot=yes,device-name=jenkinskd,image=projects/ubuntu-os-cloud/global/images/$UBUNTU_IMAGE,mode=rw,size=50,type=projects/$PROJECT_ID/zones/$ZONE/diskTypes/pd-balanced \
+ --create-disk=auto-delete=yes,boot=yes,device-name=kubemain,image=projects/ubuntu-os-cloud/global/images/$UBUNTU_IMAGE,mode=rw,size=50,type=projects/$PROJECT_ID/zones/$ZONE/diskTypes/pd-balanced \
  --no-shielded-secure-boot \
  --shielded-vtpm \
  --tags=kubemain \
